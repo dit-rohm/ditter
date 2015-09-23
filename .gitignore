@@ -1,0 +1,6 @@
+# gitignore setting
+*~
+*.swp
+*.log
+*.DS_Store
+config.php
