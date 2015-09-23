@@ -4,7 +4,7 @@ function connectDb() {
   try {
     return new PDO(DSN, DB_USER, DB_PASSWORD);
   } catch (PDOException $e) {
-    echo $e->getMessage();
+    print $e->getMessage();
     exit;
   }
 }
@@ -20,9 +20,27 @@ function setToken() {
 
 function checkToken() {
   if (empty($_SESSION['token']) || ($_SESSION['token'] != $_POST['token'])) {
-    echo "不正なPOSTが行われました！";
+    print "不正なPOSTが行われました！";
     exit;
   }
+}
+
+function emailExists($email, $db) {
+  $sql = "SELECT * FROM users WHERE email = :email";
+  $statement  = $db->prepare($sql);
+  $statement->bindValue(':email', $email, PDO::PARAM_STR);
+  $statement->execute();
+  $row = $statement->fetch();
+  return $row ? true : false;
+}
+
+function screenNameExists($screen_name, $db) {
+  $sql = "SELECT * FROM users WHERE screen_name = :screen_name";
+  $statement  = $db->prepare($sql);
+  $statement->bindValue(':screen_name', $screen_name, PDO::PARAM_STR);
+  $statement->execute();
+  $row = $statement->fetch();
+  return $row ? true : false;
 }
 
 function getUserId($email, $password, $db) {
@@ -112,5 +130,4 @@ function deletePost($pdo, $id) {
   $statement = $pdo->prepare($sql);
   $statement->bindValue(':id', $id, PDO::PARAM_INT);
   $statement->execute();
-
 }
