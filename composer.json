@@ -1,0 +1,12 @@
+{
+    "name": "dit-rohm/ditter",
+    "require": {
+        "sergeytsalkov/meekrodb": "^2.3"
+    },
+    "authors": [
+        {
+            "name": "DIT",
+            "email": "dit.rohm@gmail.com"
+        }
+    ]
+}
