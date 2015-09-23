@@ -1,5 +1,5 @@
 <?php
 
-define('DSN', 'mysql:host=localhost;dbname=');
-define('DB_USER', '');
+define('DB_NAME', 'ditter');
+define('DB_USER', 'ditter');
 define('DB_PASSWORD', '');
