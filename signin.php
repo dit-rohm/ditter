@@ -4,53 +4,39 @@ require_once('functions.php');
  
 session_start();
 
-if (!empty($_SESSION['user'])) {
-  header('Location: index.php');
+if (!empty($_SESSION['user_id'])) {
+  $index_url = "index.php";
+  header('Location: {$index_url}');
   exit;
 }
 
-function getUser($email, $password, $dbh) {
-    $sql = "SELECT id, password FROM users WHERE email = :email";
-    $sth = $dbh->prepare($sql);
-    $sth->bindValue(':email', $email, \PDO::PARAM_STR);
-    $sth->execute();
-    $user = $sth->fetch();
-    if (password_verify($password, $user['password'])) {
-      return $user['id'];
-    } else {
-      return false;
-    }
-}
-
-$err = [];
+$error = [];
 $email = '';
 $password = ''; 
 
-if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   setToken();
 } else {
   checkToken();
 
   $email = $_POST['email'];
   $password = $_POST['password'];
-  $dbh = connectDb();
+  $db = connectDb();
 
   if ($email === '') {
-    $err['email'] = 'メールアドレスを入力してください';
-  }
-  else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $err['email'] = 'メールアドレスの形式が正しくないです';
+    $error['email'] = 'メールアドレスを入力してください';
   }
   if ($password === '') {
-    $err['password'] = 'パスワードを入力してください';
+    $error['password'] = 'パスワードを入力してください';
   }
-  else if (!$user = getUser($email, $password, $dbh)) {
-    $err['password'] = 'パスワードとメールアドレスが正しくありません';    
+  else if (!$user_id = getUserId($email, $password, $db)) {
+    $error['password'] = 'パスワードとメールアドレスが正しくありません';    
   }
-  else if (empty($err)) {
+  else if (empty($error)) {
     session_regenerate_id(true);
-    $_SESSION['user'] = $uesr;
-    header('Location: index.php');
+    $_SESSION['user_id'] = $user_id;
+    $index_url = "index.php";
+    header("Location: {$index_url}");
     exit;
   }
 }
@@ -61,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>signup - Ditter</title>
+  <title>signin - Ditter</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
 <body>
@@ -73,15 +59,15 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
         <form action="" method="POST">
           <div class="form-group">
             <label for="InputEmail">メールアドレス</label>
-            <input type="email" class="form-control" id="inputEmail" name="email" value="<?php echo escape($email); ?>">
-            <p><?php if (array_key_exists('email', $err)) : echo escape($err['email']); endif;?></p>
+            <input type="email" class="form-control" id="inputEmail" name="email" value="<?php print escape($email); ?>">
+            <p><?php if (array_key_exists('email', $error)) { print escape($error['email']); }?></p>
           </div>
           <div class="form-group">
             <label for="exampleInputPassword1">パスワード</label>
             <input type="password" class="form-control" id="inputPassword" name="password">
-            <p><?php if (array_key_exists('password', $err)) : echo escape($err['password']); endif;?></p>
+            <p><?php if (array_key_exists('password', $error)) { print escape($error['password']); }?></p>
           </div>
-          <input type="hidden" name="token" value="<?php echo escape($_SESSION['token']); ?>">
+          <input type="hidden" name="token" value="<?php print escape($_SESSION['token']); ?>">
           <button type="submit" class="btn btn-default">ログイン</button>
         </form>  
         <p>新規登録は<a href="./signup.php">こちら</a></p>
