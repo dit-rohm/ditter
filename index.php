@@ -24,7 +24,7 @@
   $table_name = 'posts';
   $record_num = postsCounter($db);
   $show_limit_per_page = 5;
-  $page_limit = ceil($record_num / $show_limit_per_page);
+  $page_limit = floor($record_num / $show_limit_per_page) + 1;
 
   // POSTリクエストが有った場合
   if(isset($_POST['postText'])){
@@ -37,7 +37,6 @@
       writePost($db, $user_id, $postText);
 
       // 二重投稿防止のため再読み込み
-      http_response_code(302);
       header('Location: ' . $_SERVER['SCRIPT_NAME']);
     }
   }
@@ -51,7 +50,6 @@
     }
 
     // 再読み込み
-    http_response_code(302);
     header('Location: ' . $_SERVER['SCRIPT_NAME']);
   }
 
@@ -197,41 +195,51 @@
           </div>
           <!-- List group -->
           <ul class="list-group">
-          <?php foreach ($posts as $key => $value):
-            $post_by = getUserData($db, $value['user_id']);
-          ?>
+          <?php if(empty($posts)): ?>
             <li class="list-group-item">
               <div class="container-fluid">
-                <h5><?php print $post_by['user_name'] ?></h5>
-                <p class="small text-muted reply-to">@<?php print $post_by['screen_name'] ?></p>
-                <p><?php print $value['text'] ?></p>
-                <p class="small"><?php print $value['created_at'] ?></p>
-                <p class="text-right">
-                  <button type="button" class="btn btn-primary reply-btn" data-toggle="modal" data-target="#replyModal">
-                    <span class="glyphicon glyphicon-send" aria-hidden="true"></span>　返信する
-                  </button>
-                  <?php if ($user_id == $post_by['id']): ?>
-                  <?php
-                    if ($current_page == 1) {
-                      if (isset($_GET['page'])) {
-                        $delete_url = $_SERVER['REQUEST_URI'] . "&delete_post_id=" . $value['id'];
-                      } else {
-                        $delete_url = $_SERVER['REQUEST_URI'] . "?delete_post_id=" . $value['id'];
-                      }
-                    } else {
-                      $delete_url = $_SERVER['REQUEST_URI'] . "&delete_post_id=" . $value['id'];
-                    }
-                  ?>
-                  <a href="<?php print $delete_url ?>">
-                    <button type="submit" class="btn btn-danger reply-btn" name="delete_post">
-                      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>　削除する
-                    </button>
-                  </a>
-                  <?php endif;?>
+                <p class="text-center">
+                  <strong>ツイートがありません。</strong>
                 </p>
               </div>
             </li>
-          <?php endforeach; ?>
+          <?php else: ?>
+            <?php foreach ($posts as $key => $value):
+              $post_by = getUserData($db, $value['user_id']);
+            ?>
+              <li class="list-group-item">
+                <div class="container-fluid">
+                  <h5><?php print $post_by['user_name'] ?></h5>
+                  <p class="small text-muted reply-to">@<?php print $post_by['screen_name'] ?></p>
+                  <p><?php print $value['text'] ?></p>
+                  <p class="small"><?php print $value['created_at'] ?></p>
+                  <p class="text-right">
+                    <button type="button" class="btn btn-primary reply-btn" data-toggle="modal" data-target="#replyModal">
+                      <span class="glyphicon glyphicon-send" aria-hidden="true"></span>　返信する
+                    </button>
+                    <?php if ($user_id == $post_by['id']): ?>
+                    <?php
+                      if ($current_page == 1) {
+                        if (isset($_GET['page'])) {
+                          $delete_url = $_SERVER['REQUEST_URI'] . "&delete_post_id=" . $value['id'];
+                        } else {
+                          $delete_url = $_SERVER['REQUEST_URI'] . "?delete_post_id=" . $value['id'];
+                        }
+                      } else {
+                        $delete_url = $_SERVER['REQUEST_URI'] . "&delete_post_id=" . $value['id'];
+                      }
+                    ?>
+                    <a href="<?php print $delete_url ?>">
+                      <button type="submit" class="btn btn-danger reply-btn" name="delete_post">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>　削除する
+                      </button>
+                    </a>
+                    <?php endif;?>
+                  </p>
+                </div>
+              </li>
+            <?php endforeach; ?>
+          <?php endif; ?>
           </ul>
         </div>
         <div class="container-fluid text-center">
