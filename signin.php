@@ -1,8 +1,5 @@
 <?php
-require_once 'config.php';
-require_once 'functions.php';
-
-session_start();
+require_once 'init.php';
 
 if (!empty($_SESSION['user_id'])) {
     $index_url = 'index.php';
