@@ -27,30 +27,30 @@
   $page_limit = floor($record_num / $show_limit_per_page) + 1;
 
   // POSTリクエストが有った場合
-  if(isset($_POST['postText'])){
-    $postText = $_POST['postText'];
+  if (isset($_POST['postText'])) {
+      $postText = $_POST['postText'];
 
     // 入力文字数のチェック
     if (mb_strlen($postText) > 140) {
-      $error = '文字数が140文字を超えています';
+        $error = '文字数が140文字を超えています';
     } else {
-      writePost($db, $user_id, $postText);
+        writePost($db, $user_id, $postText);
 
       // 二重投稿防止のため再読み込み
-      header('Location: ' . $_SERVER['SCRIPT_NAME']);
+      header('Location: '.$_SERVER['SCRIPT_NAME']);
     }
   }
 
   // 削除機能
-  if(isset($_GET['delete_post_id'])) {
-    $delete_post_id = $_GET['delete_post_id'];
-    $delete_post_data = getPostData($db, $delete_post_id);
-    if ($delete_post_data['user_id'] == $user_id) {
-      deletePost($db, $delete_post_id);
-    }
+  if (isset($_GET['delete_post_id'])) {
+      $delete_post_id = $_GET['delete_post_id'];
+      $delete_post_data = getPostData($db, $delete_post_id);
+      if ($delete_post_data['user_id'] == $user_id) {
+          deletePost($db, $delete_post_id);
+      }
 
     // 再読み込み
-    header('Location: ' . $_SERVER['SCRIPT_NAME']);
+    header('Location: '.$_SERVER['SCRIPT_NAME']);
   }
 
   // タイムラインに表示する投稿の取得
@@ -194,7 +194,7 @@
           </div>
           <!-- List group -->
           <ul class="list-group">
-          <?php if(empty($posts)): ?>
+          <?php if (empty($posts)): ?>
             <li class="list-group-item">
               <div class="container-fluid">
                 <p class="text-center">
@@ -219,13 +219,13 @@
                     <?php if ($user_id == $post_by['id']): ?>
                     <?php
                       if ($current_page == 1) {
-                        if (isset($_GET['page'])) {
-                          $delete_url = $_SERVER['REQUEST_URI'] . "&delete_post_id=" . $value['id'];
-                        } else {
-                          $delete_url = $_SERVER['REQUEST_URI'] . "?delete_post_id=" . $value['id'];
-                        }
+                          if (isset($_GET['page'])) {
+                              $delete_url = $_SERVER['REQUEST_URI'].'&delete_post_id='.$value['id'];
+                          } else {
+                              $delete_url = $_SERVER['REQUEST_URI'].'?delete_post_id='.$value['id'];
+                          }
                       } else {
-                        $delete_url = $_SERVER['REQUEST_URI'] . "&delete_post_id=" . $value['id'];
+                          $delete_url = $_SERVER['REQUEST_URI'].'&delete_post_id='.$value['id'];
                       }
                     ?>
                     <button type="button" class="btn btn-danger reply-btn" name="delete_post" onclick="location.href='<?php print $delete_url ?>'">
