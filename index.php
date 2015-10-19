@@ -9,7 +9,7 @@
   $db = connectDb();
 
   // ユーザのIDを代入
-  $user_id = '1';
+  $user_id = $_SESSION['user_id'];
 
   // ユーザのIDから各種データを取得
   $user_data = getUserData($db, $user_id);
