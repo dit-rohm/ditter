@@ -9,7 +9,7 @@
   $db = connectDb();
 
   // ユーザのIDを代入
-  $user_id = '1';
+  $user_id = $_SESSION['user_id'];
 
   // ユーザのIDから各種データを取得
   $user_data = getUserData($db, $user_id);
@@ -210,7 +210,7 @@
                 <div class="container-fluid">
                   <h5><?php print $post_by['user_name'] ?></h5>
                   <p class="small text-muted reply-to">@<?php print $post_by['screen_name'] ?></p>
-                  <p><?php print $value['text'] ?></p>
+                  <p><?php print escape($value['text']) ?></p>
                   <p class="small"><?php print $value['created_at'] ?></p>
                   <p class="text-right">
                     <button type="button" class="btn btn-primary reply-btn" data-toggle="modal" data-target="#replyModal">
