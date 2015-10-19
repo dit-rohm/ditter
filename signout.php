@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+require_once 'init.php';
 
 // セッション変数を全て解除する
 $_SESSION = array();
