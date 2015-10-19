@@ -66,14 +66,13 @@
   <title>Ditter</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
-
+<style>
+  body {
+    padding-top: 70px;
+  }
+</style>
 <body>
   <!-- Fixed navbar -->
-  <style>
-    body {
-      padding-top: 70px;
-    }
-  </style>
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">
@@ -119,10 +118,10 @@
           <h4 class="modal-title" id="postModalLabel">新規投稿</h4>
         </div>
         <div class="modal-body">
-          <form action="" method="post">
+          <form action="index.php" method="post">
             <div class="form-group">
               <label for="postText" class="control-label">メッセージ（140字まで）：</label>
-              <textarea class="form-control" id="postText" name="postText" maxlength="140"></textarea>
+              <textarea class="form-control" id="postText1" name="postText" maxlength="140"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">投稿する</button>
           </form>
@@ -141,7 +140,7 @@
           <h4 class="modal-title" id="replyModalLabel">リプライ</h4>
         </div>
         <div class="modal-body">
-          <form action="" method="post">
+          <form action="index.php" method="post">
             <div class="form-group">
               <label for="replyText" class="control-label">メッセージ（140字まで）：</label>
               <textarea class="form-control" id="replyText" name="postText" maxlength="140"></textarea>
@@ -179,11 +178,11 @@
             <h3 class="panel-title">新規投稿</h3>
           </div>
           <div class="panel-body">
-            <form action="" method="post">
+            <form action="index.php" method="post">
               <div class="form-group">
-                <textarea class="form-control" id="postText" name="postText" maxlength="140"></textarea>
+                <textarea class="form-control" id="postText2" name="postText" maxlength="140"></textarea>
               </div>
-              <button type="submit" class="btn btn-primary">投稿</button>
+              <button type="submit" class="btn btn-primary">投稿する</button>
             </form>
           </div>
         </div>
@@ -229,11 +228,9 @@
                         $delete_url = $_SERVER['REQUEST_URI'] . "&delete_post_id=" . $value['id'];
                       }
                     ?>
-                    <a href="<?php print $delete_url ?>">
-                      <button type="submit" class="btn btn-danger reply-btn" name="delete_post">
-                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>　削除する
-                      </button>
-                    </a>
+                    <button type="button" class="btn btn-danger reply-btn" name="delete_post" onclick="location.href='<?php print $delete_url ?>'">
+                      <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>　削除する
+                    </button>
                     <?php endif;?>
                   </p>
                 </div>
