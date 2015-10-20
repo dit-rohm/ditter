@@ -68,10 +68,10 @@ function getUserId($email, $password, $db)
 function isSignin()
 {
     if (!isset($_SESSION['user_id'])) {
-        // 変数に値がセットされていない場合は不正な処理と判断し、ログイン画面へリダイレクトさせる
-        $no_signin_url = 'signin.php';
-        header("Location: {$no_signin_url}");
-        exit;
+        // 変数に値がセットされていない場合
+        return false;
+    } else {
+        return true;
     }
 }
 
