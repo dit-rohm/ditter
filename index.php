@@ -2,7 +2,10 @@
 require_once 'init.php';
 
 // ログイン済みかどうかのチェックを行う
-// isSignin();
+if (!isSignin()) {
+    $signin_url = 'signin.php';
+    header("Location: {$signin_url}");
+}
 
 // デーテベースへ接続
 $db = connectDb();

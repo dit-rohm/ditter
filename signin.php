@@ -1,9 +1,9 @@
 <?php
 require_once 'init.php';
 
-if (!empty($_SESSION['user_id'])) {
+if (isSignin()) {
     $index_url = 'index.php';
-    header('Location: {$index_url}');
+    header("Location: {$index_url}");
     exit;
 }
 
