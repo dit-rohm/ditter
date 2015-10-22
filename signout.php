@@ -10,3 +10,4 @@ session_destroy();
 
 $signin_url = 'signin.php';
 header("Location: {$signin_url}");
+exit;

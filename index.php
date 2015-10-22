@@ -5,6 +5,7 @@ require_once 'init.php';
 if (!isSignin()) {
     $signin_url = 'signin.php';
     header("Location: {$signin_url}");
+    exit;
 }
 
 // デーテベースへ接続
@@ -40,6 +41,7 @@ if (isset($_POST['postText'])) {
 
         // 二重投稿防止のため再読み込み
         header('Location: ' . $_SERVER['SCRIPT_NAME']);
+        exit;
     }
 }
 
@@ -53,6 +55,7 @@ if (isset($_GET['delete_post_id'])) {
 
     // 再読み込み
     header('Location: ' . $_SERVER['SCRIPT_NAME']);
+    exit;
 }
 
 // タイムラインに表示する投稿の取得
