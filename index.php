@@ -199,7 +199,7 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                 </div>
                 <!-- List group -->
                 <ul class="list-group">
-                    <?php if (empty($posts)): ?>
+                    <?php if (!$posts): ?>
                         <li class="list-group-item">
                             <div class="container-fluid">
                                 <p class="text-center">
