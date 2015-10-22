@@ -109,7 +109,7 @@ function getTimeline($pdo, $start, $postsNum)
     if ($rows = $statement->fetchAll(PDO::FETCH_ASSOC)) {
         return $rows;
     } else {
-        return exit;
+        return false;
     }
 }
 
