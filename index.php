@@ -15,10 +15,14 @@ $db = connectDb();
 $user_id = $_SESSION['user_id'];
 
 // ユーザのIDから各種データを取得
-$user_data = getUserData($db, $user_id);
-$screen_name = $user_data['screen_name'];
-$user_name = $user_data['user_name'];
-$comment = $user_data['comment'];
+try {
+    $user_data = getUserData($db, $user_id);
+    $screen_name = $user_data['screen_name'];
+    $user_name = $user_data['user_name'];
+    $comment = $user_data['comment'];
+} catch (Exception $e) {
+    print $e->getMessage();
+}
 
 // ページング
 $current_page = empty($_GET['page']) ? 1 : $_GET['page'];
@@ -40,7 +44,7 @@ if (isset($_POST['postText'])) {
         writePost($db, $user_id, $postText);
 
         // 二重投稿防止のため再読み込み
-        header('Location: ' . $_SERVER['SCRIPT_NAME']);
+        header('Location: '.$_SERVER['SCRIPT_NAME']);
         exit;
     }
 }
@@ -48,14 +52,18 @@ if (isset($_POST['postText'])) {
 // 削除機能
 if (isset($_GET['delete_post_id'])) {
     $delete_post_id = $_GET['delete_post_id'];
-    $delete_post_data = getPostData($db, $delete_post_id);
-    if ($delete_post_data['user_id'] == $user_id) {
-        deletePost($db, $delete_post_id);
-    }
+    try {
+        $delete_post_data = getPostData($db, $delete_post_id);
+        if ($delete_post_data['user_id'] == $user_id) {
+            deletePost($db, $delete_post_id);
+        }
 
-    // 再読み込み
-    header('Location: ' . $_SERVER['SCRIPT_NAME']);
-    exit;
+        // 再読み込み
+        header('Location: '.$_SERVER['SCRIPT_NAME']);
+        exit;
+    } catch (Exception $e) {
+        print $e->getMessage();
+    }
 }
 
 // タイムラインに表示する投稿の取得
@@ -212,13 +220,20 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                         </li>
                     <?php else: ?>
                         <?php foreach ($posts as $key => $value):
-                            $post_by = getUserData($db, $value['user_id']);
+                            try {
+                                $post_by = getUserData($db, $value['user_id']);
+                            } catch (Exception $e) {
+                                print $e->getMessage();
+                            }
                             ?>
+                            <?php if (isset($post_by)): ?>
                             <li class="list-group-item">
                                 <div class="container-fluid">
-                                    <h5><?php print $post_by['user_name'] ?></h5>
+                                    <h5><?php print escape($post_by['user_name']) ?></h5>
 
-                                    <p class="small text-muted reply-to">@<?php print $post_by['screen_name'] ?></p>
+                                    <p class="small text-muted reply-to">@<?php print escape(
+                                            $post_by['screen_name']
+                                        ) ?></p>
 
                                     <p><?php print escape($value['text']) ?></p>
 
@@ -233,12 +248,12 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                                             <?php
                                             if ($current_page == 1) {
                                                 if (isset($_GET['page'])) {
-                                                    $delete_url = $_SERVER['REQUEST_URI'] . '&delete_post_id=' . $value['id'];
+                                                    $delete_url = $_SERVER['REQUEST_URI'].'&delete_post_id='.$value['id'];
                                                 } else {
-                                                    $delete_url = $_SERVER['REQUEST_URI'] . '?delete_post_id=' . $value['id'];
+                                                    $delete_url = $_SERVER['REQUEST_URI'].'?delete_post_id='.$value['id'];
                                                 }
                                             } else {
-                                                $delete_url = $_SERVER['REQUEST_URI'] . '&delete_post_id=' . $value['id'];
+                                                $delete_url = $_SERVER['REQUEST_URI'].'&delete_post_id='.$value['id'];
                                             }
                                             ?>
                                             <button type="button" class="btn btn-danger reply-btn" name="delete_post"
@@ -249,6 +264,7 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                                     </p>
                                 </div>
                             </li>
+                        <?php endif ?>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </ul>
@@ -258,14 +274,14 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                     <ul class="pager">
                         <?php if ($current_page > 1): ?>
                             <li class="previous">
-                                <a href="<?php print '?page=' . $prev_page ?>">
+                                <a href="<?php print '?page='.$prev_page ?>">
                                     <span aria-hidden="true">&larr;</span> Newer
                                 </a>
                             </li>
                         <?php endif; ?>
                         <?php if ($current_page != $page_limit): ?>
                             <li class="next">
-                                <a href="<?php print '?page=' . $next_page ?>">
+                                <a href="<?php print '?page='.$next_page ?>">
                                     Older
                                     <span aria-hidden="true">&rarr;</span>
                                 </a>
