@@ -85,7 +85,7 @@ function getUserData($pdo, $id)
     if ($row = $statement->fetch()) {
         return $row;
     } else {
-        return exit;
+        throw new Exception('ユーザデータを取得できません');
     }
 }
 
@@ -136,7 +136,7 @@ function getPostData($pdo, $id)
     if ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
         return $row;
     } else {
-        return exit;
+        throw new Exception('投稿データを取得できません');
     }
 }
 
