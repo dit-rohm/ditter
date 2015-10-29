@@ -116,7 +116,7 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                                                                      aria-hidden="true"></span> 更新</a>
                 </li>
                 <li>
-                    <a href="#"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> ログアウト</a>
+                    <a href="signout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> ログアウト</a>
                 </li>
             </ul>
         </div>
