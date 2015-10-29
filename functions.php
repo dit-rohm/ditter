@@ -29,10 +29,10 @@ function checkToken()
     }
 }
 
-function emailExists($email, $db)
+function emailExists($email, PDO $pdo)
 {
     $sql = 'SELECT * FROM users WHERE email = :email';
-    $statement = $db->prepare($sql);
+    $statement = $pdo->prepare($sql);
     $statement->bindValue(':email', $email, PDO::PARAM_STR);
     $statement->execute();
     $row = $statement->fetch();
@@ -40,10 +40,10 @@ function emailExists($email, $db)
     return $row ? true : false;
 }
 
-function screenNameExists($screen_name, $db)
+function screenNameExists($screen_name, PDO $pdo)
 {
     $sql = 'SELECT * FROM users WHERE screen_name = :screen_name';
-    $statement = $db->prepare($sql);
+    $statement = $pdo->prepare($sql);
     $statement->bindValue(':screen_name', $screen_name, PDO::PARAM_STR);
     $statement->execute();
     $row = $statement->fetch();
@@ -51,10 +51,10 @@ function screenNameExists($screen_name, $db)
     return $row ? true : false;
 }
 
-function getUserId($email, $password, $db)
+function getUserId($email, $password, PDO $pdo)
 {
     $sql = 'SELECT id, password FROM users WHERE email = :email';
-    $statement = $db->prepare($sql);
+    $statement = $pdo->prepare($sql);
     $statement->bindValue(':email', $email, PDO::PARAM_STR);
     $statement->execute();
     $row = $statement->fetch();
@@ -75,7 +75,7 @@ function isSignin()
     }
 }
 
-function getUserData($pdo, $id)
+function getUserData(PDO $pdo, $id)
 {
     $sql = 'SELECT * FROM users WHERE id=:id';
     $statement = $pdo->prepare($sql);
@@ -89,7 +89,7 @@ function getUserData($pdo, $id)
     }
 }
 
-function writePost($pdo, $id, $text)
+function writePost(PDO $pdo, $id, $text)
 {
     $sql = 'INSERT INTO posts (user_id,text) VALUES (:user_id, :text)';
     $statement = $pdo->prepare($sql);
@@ -98,7 +98,7 @@ function writePost($pdo, $id, $text)
     $statement->execute();
 }
 
-function getTimeline($pdo, $start, $postsNum)
+function getTimeline(PDO $pdo, $start, $postsNum)
 {
     $sql = 'SELECT * FROM posts ORDER BY `created_at` DESC LIMIT :start, :postsNum';
     $statement = $pdo->prepare($sql);
@@ -113,7 +113,7 @@ function getTimeline($pdo, $start, $postsNum)
     }
 }
 
-function postsCounter($pdo)
+function postsCounter(PDO $pdo)
 {
     $sql = 'SELECT COUNT(*) FROM posts';
     $statement = $pdo->prepare($sql);
@@ -126,7 +126,7 @@ function postsCounter($pdo)
     }
 }
 
-function getPostData($pdo, $id)
+function getPostData(PDO $pdo, $id)
 {
     $sql = 'SELECT * FROM posts WHERE id = :id';
     $statement = $pdo->prepare($sql);
@@ -140,7 +140,7 @@ function getPostData($pdo, $id)
     }
 }
 
-function deletePost($pdo, $id)
+function deletePost(PDO $pdo, $id)
 {
     $sql = 'DELETE FROM posts WHERE id = :id';
     $statement = $pdo->prepare($sql);
