@@ -20,12 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     $comment = $_POST['comment'];
     $db = connectDb();
 
-    if (mb_strlen($user_name) < 3 or mb_strlen($user_name) > 15) {
+    if (mb_strlen($user_name) < 3 || mb_strlen($user_name) > 15) {
         $error['user_name'] = '3文字以上15文字以下にしてください';
     }
     if (!preg_match('/^[a-zA-Z0-9]+$/', $screen_name)) {
         $error['screen_name'] = '英数字にしてください';
-    } elseif (strlen($screen_name) < 3 or strlen($screen_name) > 15) {
+    } elseif (strlen($screen_name) < 3 || strlen($screen_name) > 15) {
         $error['screen_name'] = '3文字以上15文字以下にしてください';
     } elseif (screenNameExists($screen_name, $db)) {
         $error['screen_name'] = 'このidは既に登録されています';
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     }
     if (!preg_match('/^[a-zA-Z0-9]+$/', $password)) {
         $error['password'] = '英数字にしてください';
-    } elseif (strlen($password) < 4 or strlen($password) > 8) {
+    } elseif (strlen($password) < 4 || strlen($password) > 8) {
         $error['password'] = 'パスワードは4文字以上8文字以下にしてください';
     }
     if (mb_strlen($comment) > 150) {
