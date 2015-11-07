@@ -134,9 +134,9 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                 <h4 class="modal-title" id="postModalLabel">新規投稿</h4>
             </div>
             <div class="modal-body">
-                <form action="index.php" method="post">
+                <form action="<?php $_SERVER['SCRIPT_NAME'] ?>" method="post">
                     <div class="form-group">
-                        <label for="postText" class="control-label">メッセージ（140字まで）：</label>
+                        <label for="postText1" class="control-label">メッセージ（140字まで）：</label>
                         <textarea class="form-control" id="postText1" name="postText" maxlength="140"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">投稿する</button>
@@ -156,7 +156,7 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                 <h4 class="modal-title" id="replyModalLabel">リプライ</h4>
             </div>
             <div class="modal-body">
-                <form action="index.php" method="post">
+                <form action="<?php $_SERVER['SCRIPT_NAME'] ?>" method="post">
                     <div class="form-group">
                         <label for="replyText" class="control-label">メッセージ（140字まで）：</label>
                         <textarea class="form-control" id="replyText" name="postText" maxlength="140"></textarea>
@@ -194,9 +194,9 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                     <h3 class="panel-title">新規投稿</h3>
                 </div>
                 <div class="panel-body">
-                    <form action="index.php" method="post">
+                    <form action="<?php $_SERVER['SCRIPT_NAME'] ?>" method="post">
                         <div class="form-group">
-                            <textarea class="form-control" id="postText2" name="postText" maxlength="140"></textarea>
+                            <textarea class="form-control" id="postText2" name="postText" maxlength="140" title=""></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">投稿する</button>
                     </form>
@@ -299,15 +299,15 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                 </div>
                 <div class="panel-body">
                     <h4 class="leader">
-                        <?php print $user_name; ?>
+                        <?php if (isset($user_name)) {print $user_name;}; ?>
                     </h4>
 
                     <p class="small text-muted">@
-                        <?php print $screen_name; ?>
+                        <?php if (isset($screen_name)) {print $screen_name;}; ?>
                     </p>
 
                     <p>
-                        <?php print $comment; ?>
+                        <?php if (isset($comment)) {print $comment;}; ?>
                     </p>
                 </div>
             </div>
@@ -316,7 +316,7 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script type="text/javascript">
+<script>
     $(function () {
         // #flush の要素を7秒でフェードアウト
         $('#flush').fadeOut(7000);

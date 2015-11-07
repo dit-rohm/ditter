@@ -3,7 +3,7 @@
 function connectDb()
 {
     try {
-        return new PDO(DSN, DB_USER, DB_PASSWORD);
+        return new PDO(DSN, DB_USER, DB_PASSWORD, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
     } catch (PDOException $e) {
         print $e->getMessage();
         exit;
