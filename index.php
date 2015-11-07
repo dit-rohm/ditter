@@ -136,7 +136,7 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
             <div class="modal-body">
                 <form action="index.php" method="post">
                     <div class="form-group">
-                        <label for="postText" class="control-label">メッセージ（140字まで）：</label>
+                        <label for="postText1" class="control-label">メッセージ（140字まで）：</label>
                         <textarea class="form-control" id="postText1" name="postText" maxlength="140"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">投稿する</button>

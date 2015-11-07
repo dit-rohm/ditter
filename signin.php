@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
             <form action="" method="POST">
                 <div class="form-group">
-                    <label for="InputEmail">メールアドレス</label>
+                    <label for="inputEmail">メールアドレス</label>
                     <input type="email" class="form-control" id="inputEmail" name="email"
                            value="<?php print escape($email); ?>">
 
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                         } ?></p>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">パスワード</label>
+                    <label for="inputPassword">パスワード</label>
                     <input type="password" class="form-control" id="inputPassword" name="password">
 
                     <p><?php if (array_key_exists('password', $error)) {
