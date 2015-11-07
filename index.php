@@ -112,7 +112,7 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                     </button>
                 </li>
                 <li>
-                    <a href="<?php $_SERVER['REQUEST_URI'] ?>"><span class="glyphicon glyphicon-refresh"
+                    <a href="<?php print $_SERVER['REQUEST_URI']; ?>"><span class="glyphicon glyphicon-refresh"
                                                                      aria-hidden="true"></span> 更新</a>
                 </li>
                 <li>
@@ -134,7 +134,7 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                 <h4 class="modal-title" id="postModalLabel">新規投稿</h4>
             </div>
             <div class="modal-body">
-                <form action="<?php $_SERVER['SCRIPT_NAME'] ?>" method="post">
+                <form action="<?php print $_SERVER['SCRIPT_NAME']; ?>" method="post">
                     <div class="form-group">
                         <label for="postText1" class="control-label">メッセージ（140字まで）：</label>
                         <textarea class="form-control" id="postText1" name="postText" maxlength="140"></textarea>
@@ -156,7 +156,7 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                 <h4 class="modal-title" id="replyModalLabel">リプライ</h4>
             </div>
             <div class="modal-body">
-                <form action="<?php $_SERVER['SCRIPT_NAME'] ?>" method="post">
+                <form action="<?php print $_SERVER['SCRIPT_NAME']; ?>" method="post">
                     <div class="form-group">
                         <label for="replyText" class="control-label">メッセージ（140字まで）：</label>
                         <textarea class="form-control" id="replyText" name="postText" maxlength="140"></textarea>
@@ -194,7 +194,7 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                     <h3 class="panel-title">新規投稿</h3>
                 </div>
                 <div class="panel-body">
-                    <form action="<?php $_SERVER['SCRIPT_NAME'] ?>" method="post">
+                    <form action="<?php print $_SERVER['SCRIPT_NAME']; ?>" method="post">
                         <div class="form-group">
                             <textarea class="form-control" id="postText2" name="postText" maxlength="140" title=""></textarea>
                         </div>
