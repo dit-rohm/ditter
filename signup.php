@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         <div class="col-md-4">
             <h1>新規登録</h1>
 
-            <form action="" method="POST">
+            <form action="<?php $_SERVER['SCRIPT_NAME'] ?>" method="POST">
                 <div class="form-group">
                     <label for="userName">ユーザ名</label>
                     <input type="text" class="form-control" id="userName" name="user_name" placeholder="3文字以上15文字以下"

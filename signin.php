@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         <div class="col-md-4">
             <h1>ログイン</h1>
 
-            <form action="" method="POST">
+            <form action="<?php $_SERVER['SCRIPT_NAME'] ?>" method="POST">
                 <div class="form-group">
                     <label for="inputEmail">メールアドレス</label>
                     <input type="email" class="form-control" id="inputEmail" name="email"
