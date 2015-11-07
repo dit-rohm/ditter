@@ -299,15 +299,15 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                 </div>
                 <div class="panel-body">
                     <h4 class="leader">
-                        <?php print $user_name; ?>
+                        <?php if (isset($user_name)) {print $user_name;}; ?>
                     </h4>
 
                     <p class="small text-muted">@
-                        <?php print $screen_name; ?>
+                        <?php if (isset($screen_name)) {print $screen_name;}; ?>
                     </p>
 
                     <p>
-                        <?php print $comment; ?>
+                        <?php if (isset($comment)) {print $comment;}; ?>
                     </p>
                 </div>
             </div>
