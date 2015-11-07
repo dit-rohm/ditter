@@ -323,8 +323,8 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
 
         // リプライ時にスクリーンネームを埋めておく
         $('.reply-btn').click(function () {
-            var $screen_name = $(this).parent().siblings('.reply-to').text();
-            $('#reply_text').val($screen_name + ' ');
+            var screen_name = $(this).parent().siblings('.reply-to').text();
+            $('#replyText').val(screen_name + ' ');
         });
     });
 </script>
