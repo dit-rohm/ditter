@@ -196,7 +196,7 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                 <div class="panel-body">
                     <form action="index.php" method="post">
                         <div class="form-group">
-                            <textarea class="form-control" id="postText2" name="postText" maxlength="140"></textarea>
+                            <textarea class="form-control" id="postText2" name="postText" maxlength="140" title=""></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">投稿する</button>
                     </form>
