@@ -91,9 +91,12 @@ function getUserData(PDO $pdo, $id)
 
 function writePost(PDO $pdo, $id, $text)
 {
-    $sql = 'INSERT INTO posts (user_id,text) VALUES (:user_id, :text)';
+    $replyUserId = getReplyId($pdo, $text);
+
+    $sql = 'INSERT INTO posts (user_id,in_reply_to_user_id,text) VALUES (:user_id, :reply_user_id, :text)';
     $statement = $pdo->prepare($sql);
     $statement->bindValue(':user_id', $id, PDO::PARAM_INT);
+    $statement->bindValue(':reply_user_id', $replyUserId, PDO::PARAM_INT);
     $statement->bindValue(':text', $text, PDO::PARAM_STR);
     $statement->execute();
 }
@@ -113,10 +116,65 @@ function getTimeline(PDO $pdo, $start, $postsNum)
     }
 }
 
-function postsCounter(PDO $pdo)
+function getReplyTimeline(PDO $pdo, $userId, $start, $postsNum)
+{
+    $sql = 'SELECT * FROM posts WHERE `in_reply_to_user_id` = :user_id ORDER BY `created_at` DESC LIMIT :start, :postsNum';
+    $statement = $pdo->prepare($sql);
+    $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
+    $statement->bindValue(':start', $start, PDO::PARAM_INT);
+    $statement->bindValue(':postsNum', $postsNum, PDO::PARAM_INT);
+    $statement->execute();
+
+    if ($rows = $statement->fetchAll(PDO::FETCH_ASSOC)) {
+        return $rows;
+    } else {
+        return false;
+    }
+}
+
+function getUserIdByScreenName(PDO $pdo, $screenName)
+{
+    $sql = 'SELECT id FROM users WHERE `screen_name` = :screen_name';
+    $statement = $pdo->prepare($sql);
+    $statement->bindValue(':screen_name', $screenName, PDO::PARAM_STR);
+    $statement->execute();
+
+    if ($row = $statement->fetch(PDO::FETCH_ASSOC)) {
+        return $row['id'];
+    } else {
+        return null;
+    }
+}
+
+function getReplyId(PDO $pdo, $text)
+{
+    $at = preg_match_all('/@(?P<screen_name>[a-zA-Z0-9]+) /', $text, $mention);
+
+    if ($at) {
+        return getUserIdByScreenName($pdo, $mention["screen_name"][0]);
+    }
+
+    return null;
+}
+
+function getPostCount(PDO $pdo)
 {
     $sql = 'SELECT COUNT(*) FROM posts';
     $statement = $pdo->prepare($sql);
+    $statement->execute();
+
+    if ($row = $statement->fetch(PDO::FETCH_NUM)) {
+        return $row[0];
+    } else {
+        return 0;
+    }
+}
+
+function getReplyCount(PDO $pdo, $userId)
+{
+    $sql = 'SELECT COUNT(*) FROM posts WHERE `in_reply_to_user_id` = :user_id';
+    $statement = $pdo->prepare($sql);
+    $statement->bindValue(':user_id', $userId, PDO::PARAM_INT);
     $statement->execute();
 
     if ($row = $statement->fetch(PDO::FETCH_NUM)) {
