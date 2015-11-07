@@ -78,12 +78,12 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ditter</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 70px;
+        }
+    </style>
 </head>
-<style>
-    body {
-        padding-top: 70px;
-    }
-</style>
 <body>
 <!-- Fixed navbar -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
