@@ -29,7 +29,7 @@ $current_page = empty($_GET['page']) ? 1 : $_GET['page'];
 $next_page = $current_page + 1;
 $prev_page = $current_page - 1;
 $table_name = 'posts';
-$record_num = postsCounter($db);
+$record_num = getPostCount($db);
 $show_limit_per_page = 5;
 $page_limit = floor($record_num / $show_limit_per_page) + 1;
 
@@ -44,7 +44,7 @@ if (isset($_POST['postText'])) {
         writePost($db, $user_id, $postText);
 
         // 二重投稿防止のため再読み込み
-        header('Location: '.$_SERVER['SCRIPT_NAME']);
+        header('Location: ' . $_SERVER['SCRIPT_NAME']);
         exit;
     }
 }
@@ -59,7 +59,7 @@ if (isset($_GET['delete_post_id'])) {
         }
 
         // 再読み込み
-        header('Location: '.$_SERVER['SCRIPT_NAME']);
+        header('Location: ' . $_SERVER['SCRIPT_NAME']);
         exit;
     } catch (Exception $e) {
         print $e->getMessage();
@@ -89,8 +89,7 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -101,19 +100,17 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class="active"><a href=".">ホーム</a></li>
-                <li><a href="/reply.php">返信</a></li>
+                <li><a href="reply.php">返信</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary navbar-btn" data-toggle="modal"
-                            data-target="#postModal">
+                    <button type="button" class="btn btn-primary navbar-btn" data-toggle="modal" data-target="#postModal">
                         <span class="glyphicon glyphicon-comment" aria-hidden="true"></span> 投稿
                     </button>
                 </li>
                 <li>
-                    <a href="<?php print $_SERVER['REQUEST_URI']; ?>"><span class="glyphicon glyphicon-refresh"
-                                                                     aria-hidden="true"></span> 更新</a>
+                    <a href="<?php print $_SERVER['REQUEST_URI']; ?>"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> 更新</a>
                 </li>
                 <li>
                     <a href="signout.php"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> ログアウト</a>
@@ -231,40 +228,25 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                                 <div class="container-fluid">
                                     <h5><?php print escape($post_by['user_name']) ?></h5>
 
-                                    <p class="small text-muted reply-to">@<?php print escape(
-                                            $post_by['screen_name']
-                                        ) ?></p>
+                                    <p class="small text-muted reply-to" data-user-id="<?php print $value['user_id'] ?>">@<?php print escape($post_by['screen_name']) ?></p>
 
                                     <p><?php print escape($value['text']) ?></p>
 
                                     <p class="small"><?php print $value['created_at'] ?></p>
 
                                     <p class="text-right">
-                                        <button type="button" class="btn btn-primary reply-btn" data-toggle="modal"
-                                                data-target="#replyModal">
+                                        <button type="button" class="btn btn-primary reply-btn" data-toggle="modal" data-target="#replyModal">
                                             <span class="glyphicon glyphicon-send" aria-hidden="true"></span>　返信する
                                         </button>
-                                        <?php if ($user_id == $post_by['id']): ?>
-                                            <?php
-                                            if ($current_page == 1) {
-                                                if (isset($_GET['page'])) {
-                                                    $delete_url = $_SERVER['REQUEST_URI'].'&delete_post_id='.$value['id'];
-                                                } else {
-                                                    $delete_url = $_SERVER['REQUEST_URI'].'?delete_post_id='.$value['id'];
-                                                }
-                                            } else {
-                                                $delete_url = $_SERVER['REQUEST_URI'].'&delete_post_id='.$value['id'];
-                                            }
-                                            ?>
-                                            <button type="button" class="btn btn-danger reply-btn" name="delete_post"
-                                                    onclick="location.href='<?php print $delete_url ?>'">
+                                        <?php if ($user_id == $value['user_id']): ?>
+                                            <a class="btn btn-danger reply-btn" href="<?php print $_SERVER['SCRIPT_NAME'] . '?delete_post_id=' . $value['id'] ?>">
                                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>　削除する
-                                            </button>
+                                            </a>
                                         <?php endif; ?>
                                     </p>
                                 </div>
                             </li>
-                        <?php endif ?>
+                        <?php endif; ?>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </ul>
@@ -274,16 +256,15 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                     <ul class="pager">
                         <?php if ($current_page > 1): ?>
                             <li class="previous">
-                                <a href="<?php print '?page='.$prev_page ?>">
+                                <a href="<?php print '?page=' . $prev_page ?>">
                                     <span aria-hidden="true">&larr;</span> Newer
                                 </a>
                             </li>
                         <?php endif; ?>
                         <?php if ($current_page != $page_limit): ?>
                             <li class="next">
-                                <a href="<?php print '?page='.$next_page ?>">
-                                    Older
-                                    <span aria-hidden="true">&rarr;</span>
+                                <a href="<?php print '?page=' . $next_page ?>">
+                                    Older <span aria-hidden="true">&rarr;</span>
                                 </a>
                             </li>
                         <?php endif; ?>
@@ -299,15 +280,21 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                 </div>
                 <div class="panel-body">
                     <h4 class="leader">
-                        <?php if (isset($user_name)) {print $user_name;}; ?>
+                        <?php if (isset($user_name)) {
+                            print $user_name;
+                        }; ?>
                     </h4>
 
                     <p class="small text-muted">@
-                        <?php if (isset($screen_name)) {print $screen_name;}; ?>
+                        <?php if (isset($screen_name)) {
+                            print $screen_name;
+                        }; ?>
                     </p>
 
                     <p>
-                        <?php if (isset($comment)) {print $comment;}; ?>
+                        <?php if (isset($comment)) {
+                            print $comment;
+                        }; ?>
                     </p>
                 </div>
             </div>
@@ -323,7 +310,9 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
 
         // リプライ時にスクリーンネームを埋めておく
         $('.reply-btn').click(function () {
-            var screen_name = $(this).parent().siblings('.reply-to').text();
+            var user = $(this).parent().siblings('.reply-to');
+            var screen_name = user.text();
+
             $('#replyText').val(screen_name + ' ');
         });
     });
