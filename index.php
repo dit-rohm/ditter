@@ -228,7 +228,7 @@ $posts = getTimeline($db, $start_at, $show_limit_per_page);
                                 <div class="container-fluid">
                                     <h5><?php print escape($post_by['user_name']) ?></h5>
 
-                                    <p class="small text-muted reply-to" data-user-id="<?php print $value['user_id'] ?>">@<?php print escape($post_by['screen_name']) ?></p>
+                                    <p class="small text-muted reply-to">@<?php print escape($post_by['screen_name']) ?></p>
 
                                     <p><?php print escape($value['text']) ?></p>
 
