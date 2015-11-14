@@ -1,0 +1,14 @@
+{
+  "name": "dit-rohm/ditter",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "DIT",
+      "email": "dit.rohm@gmail.com"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "4.*"
+  }
+}
