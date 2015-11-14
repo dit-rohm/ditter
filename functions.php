@@ -148,10 +148,10 @@ function getUserIdByScreenName(PDO $pdo, $screenName)
 
 function getReplyId(PDO $pdo, $text)
 {
-    $at = preg_match_all('/@(?P<screen_name>[a-zA-Z0-9]+) /', $text, $mention);
+    $at = preg_match('/^@(?P<screen_name>[a-zA-Z0-9]+) /', $text, $mention);
 
     if ($at) {
-        return getUserIdByScreenName($pdo, $mention["screen_name"][0]);
+        return getUserIdByScreenName($pdo, $mention["screen_name"]);
     }
 
     return null;
