@@ -31,7 +31,7 @@ $prev_page = $current_page - 1;
 $table_name = 'posts';
 $record_num = getPostCount($db);
 $show_limit_per_page = 5;
-$page_limit = floor($record_num / $show_limit_per_page) + 1;
+$page_limit = $record_num == 0 ? 1 : ceil($record_num / $show_limit_per_page);
 
 // POSTリクエストが有った場合
 if (isset($_POST['postText'])) {
